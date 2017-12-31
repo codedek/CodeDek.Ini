@@ -53,7 +53,7 @@ namespace Ini.Net
         public static Ini Parse(string text)
         {
             var ini = new Ini();
-            foreach (Match m in Regex.Matches(text, _sectionPattern))
+            foreach (Match m in Regex.Matches(text.Trim(), _sectionPattern))
             {
                 ini.Add(Net.Section.Parse(m.Value));
             }

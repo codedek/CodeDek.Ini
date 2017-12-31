@@ -145,26 +145,20 @@ Key=Value3";
         {
             var expected = $@"
 [SectionOne]
-Key=Value2
-Key=Value3
-
-[SectionTwo]
 -=del1
 -=del2
 ";
-
-            Assert.AreEqual(expected.Trim(), Ini.Parse(expected).ToString());
-            Assert.AreEqual(expected.Trim(), IniDocument.Parse(expected).ToString());
+            Assert.AreEqual(expected.Trim(), Section.Parse(expected).ToString());
         }
 
         [TestMethod]
         public void Section_WhenCreate_StringReturnsSection()
         {
             var expected = $""
-                //+ $"# This is a section comment.{Environment.NewLine}"
-                + $"[NewSection]{Environment.NewLine}"
-                //+ $"# This is a property comment.{Environment.NewLine}"
-                + "Jon=Doe";
+                           //+ $"# This is a section comment.{Environment.NewLine}"
+                           + $"[NewSection]{Environment.NewLine}"
+                           //+ $"# This is a property comment.{Environment.NewLine}"
+                           + "Jon=Doe";
             Assert.AreEqual(expected, _s.ToString());
         }
 

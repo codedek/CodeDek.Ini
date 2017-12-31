@@ -10,8 +10,12 @@ namespace Ini.Net
 {
     public static class HelperFunction
     {
-        public static IEnumerable<TResult> Map<TSorce, TResult>(this IEnumerable<TSorce> source, Func<TSorce, TResult> selector)
-            => source.Select(selector);
+        public static IEnumerable<TResult> Map<TSorce, TResult>(this IEnumerable<TSorce> source,
+            Func<TSorce, TResult> selector)
+        {
+            foreach (var l in source)
+                yield return selector(l);
+        }
 
         public static T DeepCopy<T>(this T other)
         {
@@ -20,7 +24,7 @@ namespace Ini.Net
                 BinaryFormatter formatter = new BinaryFormatter();
                 formatter.Serialize(ms, other);
                 ms.Position = 0;
-                return (T)formatter.Deserialize(ms);
+                return (T) formatter.Deserialize(ms);
             }
         }
 
@@ -47,12 +51,14 @@ namespace Ini.Net
                 string line;
                 while ((line = reader.ReadLine()) != null)
                 {
-                    yield return line;
+                    if (!string.IsNullOrEmpty(line))
+                        yield return line;
                 }
             }
         }
 
-        public static bool ComparisonEquals(this string source, string value, StringComparison comparisonType = StringComparison.OrdinalIgnoreCase)
+        public static bool ComparisonEquals(this string source, string value,
+            StringComparison comparisonType = StringComparison.OrdinalIgnoreCase)
             => source.Equals(value, comparisonType);
     }
 }

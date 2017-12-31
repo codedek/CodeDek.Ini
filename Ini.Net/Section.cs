@@ -63,7 +63,7 @@ namespace Ini.Net
 
         public static Section Parse(string text)
         {
-            var s = Regex.Match(text, _sectionPattern);
+            var s = Regex.Match(text.Trim(), _sectionPattern);
             if (!s.Success) return default;
             var sec = new Section(s.Groups["sectionName"].Value);
             foreach (var l in s.Value.SplitToLines())

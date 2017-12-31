@@ -28,7 +28,7 @@ namespace Ini.Net
 
         public static Property Parse(string text)
         {
-            var m = Regex.Match(text, _propertyPattern);
+            var m = Regex.Match(text.Trim(), _propertyPattern);
             return !m.Success ? default : new Property(m.Groups["key"].Value, m.Groups["value"].Value);
         }
 
