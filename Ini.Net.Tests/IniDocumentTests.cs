@@ -34,9 +34,9 @@ namespace Ini.Net.Tests
         {
             var path = Path.Combine(Environment.CurrentDirectory, "test.ini");
 
-            var result = IniDocument.Read(path, "Format", "type");
+            var result = IniDocument.Read(path, "sec1", "key1");
             TestContext.WriteLine(result);
-            Assert.AreEqual("PortableApps.comFormat", result);
+            Assert.AreEqual("val1", result);
         }
 
         [TestMethod]
@@ -44,7 +44,7 @@ namespace Ini.Net.Tests
         {
             var path = Path.Combine(Environment.CurrentDirectory, "test.ini");
             TestContext.WriteLine(path);
-            TestContext.WriteLine($"WriteResult: {IniDocument.Write(path, "sec3", "fizz", "buzz")}");
+            TestContext.WriteLine($"WriteResult: {IniDocument.Write(path, "sec1", "key1", "val5")}");
 
             var ini = IniDocument.Load(path);
             TestContext.WriteLine(ini.ToString());

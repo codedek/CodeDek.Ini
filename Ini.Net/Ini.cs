@@ -19,14 +19,40 @@ namespace Ini.Net
             _sections = other?.Sections().ToList();
         }
 
-        public string Add(Section section)
+        public void Clear() => _sections.Clear();
+
+        public bool Add(Section section, AddSection option = AddSection.IfNameIsUnique)
         {
-            if (section == null) return "Invalid Section";
-            if (_sections.Any(s =>
-                s.Name.ComparisonEquals(section.Name) || s.ToString().ComparisonEquals(section.ToString())))
-                return "Section exists";
-            _sections.Add(section);
-            return "";
+            if (section == null) return false;
+            switch (option)
+            {
+                case AddSection.IfNameIsUnique:
+                    if (Section(section.Name) == null) _sections.Add(section);
+                    
+                    return true;
+                case AddSection.MergeWithExisting:
+                    if (Section(section.Name) == null) _sections.Add(section);
+                    else
+                        foreach (var property in section.Properties())
+                            Section(section.Name).Add(property);
+
+                    return true;
+                case AddSection.MergeAndUpdateExisting:
+                    if (Section(section.Name) == null) _sections.Add(section);
+                    else
+                        foreach (var property in section.Properties())
+                            Section(section.Name).Add(property, AddProperty.UpdateValue);
+
+                    return true;
+                case AddSection.OverwriteExisting:
+                    var s = Section(section.Name);
+                    if (s == null) _sections.Add(section);
+                    else _sections[_sections.IndexOf(s)] = section;
+                    
+                    return true;
+            }
+
+            return false;
         }
 
         public void Remove(Section section)

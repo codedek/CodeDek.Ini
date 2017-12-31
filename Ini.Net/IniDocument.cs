@@ -67,14 +67,18 @@ namespace Ini.Net
             return Load(file)?.Section(section)?.Property(key)?.Value;
         }
 
-        public static string Write(string file, string section, string key, string value, bool overwrite = true)
+        public static string Write(string file, string section, string key, string value, bool writeUniqueProperty = false, bool overwrite = true)
         {
             try
             {
                 var ini = Load(file) ?? new Ini();
                 if (ini.Section(section) == null) ini.Add(new Section(section));
-                if (ini.Section(section).Property(key) == null) ini.Section(section).Add(new Property(key, value));
-                if (overwrite) ini.Section(section).Property(key).Value = value;
+                if (writeUniqueProperty)
+                {
+                    if (ini.Section(section).Property(key) == null) ini.Section(section).Add(new Property(key, value));
+                    else if (overwrite) ini.Section(section).Property(key).Value = value;
+                }
+                if (ini.Section(section).Property(key, value) == null) ini.Section(section).Add(new Property(key, value));
 
                 File.WriteAllText(file, ini.ToString());
             }

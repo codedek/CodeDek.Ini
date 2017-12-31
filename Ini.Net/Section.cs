@@ -29,11 +29,38 @@ namespace Ini.Net
             _properties = other?.Properties().ToList();
         }
 
-        public void Add(Property property)
+        public void Clear() => _properties.Clear();
+
+        public bool Add(Property property, AddProperty option = AddProperty.IfKeyAndValueIsUnique)
         {
-            if (property == null) return;
-            if (_properties.Any(p => p.ToString().ComparisonEquals(property.ToString()))) return;
-            _properties.Add(property);
+            if (property == null) return false;
+            switch (option)
+            {
+                case AddProperty.IfKeyIsUnique:
+                    if (Property(property.Key) == null) _properties.Add(property);
+                    
+                    return true;
+                case AddProperty.IfKeyAndValueIsUnique:
+                    if (Property(property.Key, property.Value) == null) _properties.Add(property);
+                    
+                    return true;
+                case AddProperty.UpdateValue:
+                    if (Property(property.Key, property.Value) != null)
+                    {
+                        Property(property.Key, property.Value).Value = property.Value;
+                        return true;
+                    }
+
+                    if (Property(property.Key) != null)
+                    {
+                        Property(property.Key).Value = property.Value;
+                        return true;
+                    }
+
+                    break;
+            }
+
+            return false;
         }
 
         public void Remove(Property property)
