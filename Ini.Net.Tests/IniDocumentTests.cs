@@ -44,7 +44,7 @@ namespace Ini.Net.Tests
         {
             var path = Path.Combine(Environment.CurrentDirectory, "test.ini");
             TestContext.WriteLine(path);
-            TestContext.WriteLine($"WriteResult: {IniDocument.Write(path, "sec1", "key1", "val5")}");
+            TestContext.WriteLine($"WriteResult: {IniDocument.Write(path, "sec1", "key1", "val1")}");
 
             var ini = IniDocument.Load(path);
             TestContext.WriteLine(ini.ToString());
