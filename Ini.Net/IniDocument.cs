@@ -16,20 +16,22 @@ namespace Ini.Net
             var ini = new Ini();
             Section sec = null;
             foreach (var line in text.SplitToLines().Where(l
-                 => !string.IsNullOrEmpty(l)
-                 && !l.StartsWith(";")
-                 && !l.StartsWith("#")))
+                => !string.IsNullOrEmpty(l)
+                   && !l.StartsWith(";")
+                   && !l.StartsWith("#")))
             {
                 if (line.StartsWith("[") && line.EndsWith("]"))
                 {
                     if (sec != null) ini.Add(new Section(sec));
                     sec = new Section(line);
                 }
+
                 if (line.Contains("="))
                 {
                     sec?.Add(new Property(line.Split('=')[0], line.Substring(line.IndexOf('=') + 1)));
                 }
             }
+
             ini.Add(sec);
             return ini;
         }
@@ -40,20 +42,22 @@ namespace Ini.Net
             var ini = new Ini();
             Section sec = null;
             foreach (var line in File.ReadLines(path).Where(l
-                 => !string.IsNullOrEmpty(l)
-                 && !l.StartsWith(";")
-                 && !l.StartsWith("#")))
+                => !string.IsNullOrEmpty(l)
+                   && !l.StartsWith(";")
+                   && !l.StartsWith("#")))
             {
                 if (line.StartsWith("[") && line.EndsWith("]"))
                 {
                     if (sec != null) ini.Add(new Section(sec));
                     sec = new Section(line);
                 }
+
                 if (line.Contains("="))
                 {
                     sec?.Add(new Property(line.Split('=')[0], line.Substring(line.IndexOf('=') + 1)));
                 }
             }
+
             ini.Add(sec);
             return ini;
         }
@@ -63,20 +67,22 @@ namespace Ini.Net
             return Load(file)?.Section(section)?.Property(key)?.Value;
         }
 
-        public static string Write(string file, string section, string key, string value)
+        public static string Write(string file, string section, string key, string value, bool overwrite = true)
         {
             try
             {
                 var ini = Load(file) ?? new Ini();
-                var s = ini.Section(section);
-                (s ?? (s = new Section(section))).Add(new Property(key, value));
-                ini.Add(s);
+                if (ini.Section(section) == null) ini.Add(new Section(section));
+                if (ini.Section(section).Property(key) == null) ini.Section(section).Add(new Property(key, value));
+                if (overwrite) ini.Section(section).Property(key).Value = value;
+
                 File.WriteAllText(file, ini.ToString());
             }
             catch (Exception ex)
             {
                 return ex.Message;
             }
+
             return "";
         }
 

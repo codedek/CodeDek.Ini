@@ -21,7 +21,7 @@ namespace Ini.Net.Tests
         [TestMethod]
         public void IniDocument_WhenLoadProperIni_ReturnsCorrectToString()
         {
-            var path = @"D:\PortableApps\#IllustratorPortable\App\AppInfo\Launcher\IllustratorPortable.ini";
+            var path = Path.Combine(Environment.CurrentDirectory, "test.ini");
             var file = File.ReadAllText(path);
             var ini = IniDocument.Load(path);
 
@@ -32,7 +32,7 @@ namespace Ini.Net.Tests
         [TestMethod]
         public void IniDocument_WhenRead_ReturnsPropertyValue()
         {
-            var path = @"D:\PortableApps\#FirefoxPortable\App\AppInfo\appinfo.ini";
+            var path = Path.Combine(Environment.CurrentDirectory, "test.ini");
 
             var result = IniDocument.Read(path, "Format", "type");
             TestContext.WriteLine(result);
@@ -44,7 +44,7 @@ namespace Ini.Net.Tests
         {
             var path = Path.Combine(Environment.CurrentDirectory, "test.ini");
             TestContext.WriteLine(path);
-            IniDocument.Write(path, "sec3", "fizz", "buzz");
+            TestContext.WriteLine($"WriteResult: {IniDocument.Write(path, "sec3", "fizz", "buzz")}");
 
             var ini = IniDocument.Load(path);
             TestContext.WriteLine(ini.ToString());
