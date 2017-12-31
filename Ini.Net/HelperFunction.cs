@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 
 namespace Ini.Net
@@ -13,8 +14,20 @@ namespace Ini.Net
         public static IEnumerable<TResult> Map<TSorce, TResult>(this IEnumerable<TSorce> source,
             Func<TSorce, TResult> selector)
         {
-            foreach (var l in source)
-                yield return selector(l);
+            foreach (var item in source)
+                yield return selector(item);
+        }
+
+        public static void ForEach<T>(this IEnumerable<T> source, Action<T> action)
+        {
+            foreach (var item in source)
+                action(item);
+        }
+
+        public static void ForEach<T>(this MatchCollection source, Action<T> action)
+        {
+            foreach (T item in source)
+                action(item);
         }
 
         public static T DeepCopy<T>(this T other)
