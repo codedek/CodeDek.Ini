@@ -14,12 +14,7 @@ namespace Ini.Net
         {
         }
 
-        public Ini(Ini other)
-        {
-            _sections = other?.Sections().ToList();
-        }
-
-        public void Clear() => _sections.Clear();
+        public Ini(Ini other) => _sections = other?.Sections().ToList();
 
         public bool Add(Section section, AddSection option = AddSection.IfNameIsUnique)
         {
@@ -28,7 +23,7 @@ namespace Ini.Net
             {
                 case AddSection.IfNameIsUnique:
                     if (Section(section.Name) == null) _sections.Add(section);
-                    
+
                     return true;
                 case AddSection.MergeWithExisting:
                     if (Section(section.Name) == null) _sections.Add(section);
@@ -48,32 +43,11 @@ namespace Ini.Net
                     var s = Section(section.Name);
                     if (s == null) _sections.Add(section);
                     else _sections[_sections.IndexOf(s)] = section;
-                    
+
                     return true;
             }
 
             return false;
-        }
-
-        public void Remove(Section section)
-        {
-            if (section == null) return;
-            _sections.Remove(section);
-        }
-
-        public Section Section(string name)
-        {
-            return _sections.FirstOrDefault(s => s.Name.ComparisonEquals(name));
-        }
-
-        public IEnumerable<Section> Sections()
-        {
-            return _sections;
-        }
-
-        public override string ToString()
-        {
-            return $"{string.Join($"{Environment.NewLine}{Environment.NewLine}", _sections.Select(s => s))}".Trim();
         }
 
         public static Ini Parse(string text)
@@ -86,5 +60,16 @@ namespace Ini.Net
 
             return ini;
         }
+
+        public bool Remove(Section section) => _sections.Remove(section);
+
+        public void Clear() => _sections.Clear();
+
+        public Section Section(string name) => _sections.FirstOrDefault(s => s.Name.ComparisonEquals(name));
+
+        public IEnumerable<Section> Sections() => _sections;
+
+        public override string ToString() =>
+            $"{string.Join($"{Environment.NewLine}{Environment.NewLine}", _sections.Select(s => s))}".Trim();
     }
 }

@@ -21,13 +21,9 @@ namespace Ini.Net
 
         public Property(Property other)
         {
+            if (other == null) throw new ArgumentException("Cannot pass a null property", nameof(other));
             Key = other?.Key;
             Value = other?.Value;
-        }
-
-        public override string ToString()
-        {
-            return $"{Key}={Value}".Trim();
         }
 
         public static Property Parse(string text)
@@ -35,5 +31,7 @@ namespace Ini.Net
             var m = Regex.Match(text, _propertyPattern);
             return !m.Success ? default : new Property(m.Groups["key"].Value, m.Groups["value"].Value);
         }
+
+        public override string ToString() => $"{Key}={Value}".Trim();
     }
 }

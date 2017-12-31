@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Xml.Serialization;
@@ -9,6 +10,9 @@ namespace Ini.Net
 {
     public static class HelperFunction
     {
+        public static IEnumerable<TResult> Map<TSorce, TResult>(this IEnumerable<TSorce> source, Func<TSorce, TResult> selector)
+            => source.Select(selector);
+
         public static T DeepCopy<T>(this T other)
         {
             using (MemoryStream ms = new MemoryStream())
