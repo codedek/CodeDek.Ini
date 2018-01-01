@@ -55,6 +55,8 @@ namespace Ini.Net
                         return true;
                     }
 
+                    _properties.Add(property);
+                    return true;
                     break;
             }
 
