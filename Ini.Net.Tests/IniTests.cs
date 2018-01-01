@@ -10,103 +10,130 @@ namespace Ini.Net.Tests
     [TestClass]
     public class IniTests
     {
+        Ini _i;
+        string _ini;
+
         public TestContext TestContext { get; set; }
-        // ctor
-        // add
-        // parse
-        // sections
-        // section
-        // remove
 
-        [TestMethod]
-        public void Ini_WhenPassInAnotherIni_MakesAProperCopy()
+        [TestInitialize]
+        public void Setup()
         {
-            var i = new Ini();
-            var i1 = new Ini(i);
-            Assert.AreNotEqual(i, i1);
+            _i = new Ini();
+            var s = new Section("sec");
+            s.Add(new Property("key1", "val1"));
+            s.Add(new Property("key2", "val2"));
+
+            var s2 = new Section("del");
+            s2.Add(new Property("-", "foo"));
+            s2.Add(new Property("-", "bar"));
+            _i.Add(s);
+            _i.Add(s2);
+            _ini = _i.ToString();
         }
 
         [TestMethod]
-        public void Ini_OnlyAddsUniqueSections()
+        public void Ini_WhenInstantiatedWithAnotherIni_CreatesACopyOfThatIni()
         {
-            var s1 = new Section("Sec1");
-            var p1 = new Property("Key", "Value");
-            var p2 = new Property("Key1", "Value1");
-            var p3 = new Property("Key2", "value2");
-            s1.Add(p1);
-            s1.Add(p2);
-            s1.Add(p3);
-
-            var s2 = new Section("Sec2");
-            var p4 = new Property("-", "delete1");
-            var p5 = new Property("-", "delete2");
-            s2.Add(p4);
-            s2.Add(p5);
-
-            var s3 = new Section("SEC2");
-            var p6 = new Property("-", "DELETE1");
-            var p7 = new Property("-", "DELETE2");
-            s3.Add(p6);
-            s3.Add(p7);
-
-            var ini = new Ini();
-            ini.Add(s1);
-            ini.Add(s1);
-            ini.Add(s2);
-            ini.Add(s2);
-            ini.Add(s3);
-            ini.Add(s3);
-
-            Assert.AreEqual(2, ini.Sections().Count());
-
-            var expected = $@"
-[Sec1]
-Key=Value
-Key1=Value1
-Key2=Value2
-
-[Sec2]
--=delete1
--=delete2
-";
-            Assert.IsTrue(expected.Trim().Equals(ini.ToString(),StringComparison.OrdinalIgnoreCase));
+            var i = new Ini(_i);
+            Assert.AreNotEqual(i, _i);
         }
 
         [TestMethod]
-        public void Ini_WhenParseAString_ReturnsCorrectSectionAndPropertyCount()
+        public void
+            Ini_WhenParseAnIniStringWithTwoSectionsEachWithTwoProperties_ReturnsSectionsCountOfTwoAndEachPropertiesCountOfTwo()
         {
-            const string ini = @"# this is a section
-[SectionName]
-# this is a property
-propertyKey=propertyValue
-# some other properties
-prop1Key=prop1Val
-prop2Key=prop2Val
-
-[section2Name]
-p2key=p2val
-p3key=p3val";
-
-            //var i0 = @"D:\PortableApps\#FirefoxPortable\App\AppInfo\Launcher\FirefoxPortable.ini";
-            //var f = File.ReadAllText(i0);
-
-            var i = Ini.Parse(ini);
-            i.Section("sectionname").Remove("propertykey", "propertyvalue");
+            var i = Ini.Parse(_ini);
             Assert.AreEqual(2, i.Sections().Count());
-            Assert.AreEqual(2, i.Section("sectionname").Properties().Count());
-            Assert.AreEqual(2, i.Section("section2name").Properties().Count());
+            Assert.AreEqual(2, i.Section("sec").Properties().Count());
+            Assert.AreEqual(2, i.Section("del").Properties().Count());
+        }
 
-            //var sectionComment =
-            //    from commentId in Parse.Char('#').Once()
-            //    from whitespace in Parse.WhiteSpace.Many()
-            //    from comment in Parse.LetterOrDigit.Many()
-            //    from eol in Parse.LineEnd
-            //    select comment;
-            //var secComment = sectionComment.Parse(ini).ToString().Trim();
-            //Assert.AreEqual("this", secComment);
+        [TestMethod]
+        public void Ini_WhenParseAnIniStringWithTwoSectionsEachWithTwoProperties_ReturnsCorrectToString()
+        {
+            TestContext.WriteLine(_ini);
+            Assert.AreEqual(_ini, _i.ToString());
+        }
 
-            //var i1 = IniDocument.Parse(f);
-            //Assert.AreEqual(10, i1.Sections().Count());
+        [TestMethod]
+        public void Ini_WhenAddSectionOptionIfNameIsUniqueSetOnANewSectionWithUniqueName_SectionsCountIsThree()
+        {
+            _i.Add(new Section("unique"));
+            TestContext.WriteLine(_i.ToString());
+            Assert.AreEqual(3, _i.Sections().Count());
+        }
+
+        [TestMethod]
+        public void Ini_WhenAddSectionOptionIfNameIsUniqueSetOnANewSectionWithExistingName_SectionsCountIsTwo()
+        {
+            _i.Add(new Section("sec"));
+            TestContext.WriteLine(_i.ToString());
+            Assert.AreEqual(2, _i.Sections().Count());
+        }
+
+        [TestMethod]
+        public void Ini_WhenAddSectionOptionOverwriteExistingSetOnANewSectionWithUniqueName_SectionsCountIsThree()
+        {
+            _i.Add(new Section("unique"), AddSection.OverwriteExisting);
+            TestContext.WriteLine(_i.ToString());
+            Assert.AreEqual(3, _i.Sections().Count());
+        }
+
+        [TestMethod]
+        public void
+            Ini_WhenAddSectionOptionOverwriteExistingSetOnANewSectionWithExistingName_TheExistingSectionIsOverwrittenWithTheNewSectionAndSectionsCountIsTwo()
+        {
+            _i.Add(new Section("sec"), AddSection.OverwriteExisting);
+            TestContext.WriteLine(_i.ToString());
+            Assert.AreEqual(2, _i.Sections().Count());
+            Assert.AreEqual(0, _i.Section("sec").Properties().Count());
+        }
+
+        [TestMethod]
+        public void Ini_WhenAddSectionOptionMergeWithExistingSetOnANewSectionWithUniqueName_SectionsCountIsThree()
+        {
+            _i.Add(new Section("unique"), AddSection.MergeWithExisting);
+            TestContext.WriteLine(_i.ToString());
+            Assert.AreEqual(3, _i.Sections().Count());
+        }
+
+        [TestMethod]
+        public void
+            Ini_WhenAddSectionOptionMergeWithExistingSetOnANewSectionWithExistingName_TheUniquePropertiesFromTheNewSectionIsAddedToTheExistingSectionAndSectionsCountIsTwo()
+        {
+            var s = new Section("sec");
+            s.Add(new Property("key1", "val1"));
+            s.Add(new Property("key1", "happy new year"));
+            s.Add(new Property("add", "me"));
+            _i.Add(s, AddSection.MergeWithExisting);
+            TestContext.WriteLine(_i.ToString());
+
+            Assert.AreEqual(2, _i.Sections().Count());
+            Assert.AreEqual(4, _i.Section("sec").Properties().Count());
+        }
+
+        [TestMethod]
+        public void Ini_WhenAddSectionOptionMergeAndUpdateExistingSetOnANewSectionWithUniqueName_SectionsCountIsThree()
+        {
+            _i.Add(new Section("unique"), AddSection.MergeAndUpdateExisting);
+            TestContext.WriteLine(_i.ToString());
+            Assert.AreEqual(3, _i.Sections().Count());
+        }
+
+        [TestMethod]
+        public void
+            Ini_WhenAddSectionOptionMergeAndUpdateExistingSetOnANewSectionWithExistingName_TheUniquePropertiesFromTheNewSectionIsAddedToTheExistingSectionTheExistingPropertiesValuesAreUpdatedAndSectionsCountIsTwo()
+        {
+            var s = new Section("sec");
+            s.Add(new Property("key1", "val1"));
+            s.Add(new Property("key1", "happy new year"));
+            s.Add(new Property("add", "me"));
+            _i.Add(s, AddSection.MergeAndUpdateExisting);
+            TestContext.WriteLine(_i.ToString());
+
+            Assert.AreEqual(2, _i.Sections().Count());
+            Assert.AreEqual(3, _i.Section("sec").Properties().Count());
+            Assert.AreEqual("happy new year", _i.Section("sec").Property("key1").Value);
         }
     }
 }
