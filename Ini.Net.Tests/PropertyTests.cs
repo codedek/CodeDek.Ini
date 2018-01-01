@@ -18,48 +18,48 @@ namespace Ini.Net.Tests
         [TestInitialize]
         public void Setup()
         {
-            _p = new Property("Jon", "Doe");
+            _p = new Property("key", "val");
         }
 
         [TestMethod]
-        public void Property_WhenInstantiatedWithValidKeyAndValue_ReturnsProperToString()
+        public void Property_WhenInstantiatedWithKeyAndVal_ToStringReturnsKeyEqualsVal()
         {
-            var p = new Property("key", "value");
-            Assert.AreEqual("key=value", p.ToString());
+            Assert.AreEqual("key=val", _p.ToString());
         }
 
         [TestMethod]
-        public void Property_WhenPassInAnotherPropertyToConstructor_ReturnsPropertyCopy()
+        public void Property_WhenInstantiatedWithAnotherProperty_ReturnsCopyOfThatProperty()
         {
-            var p1 = new Property("key", "value");
-            var p2 = new Property(p1);
-            Assert.AreNotEqual(p1, p2);
+            var p = new Property(_p);
+            Assert.AreNotEqual(p, _p);
         }
 
         [TestMethod]
-        public void Property_WhenParseAValidString_ReturnsProperToString()
+        public void Property_WhenInstantiatedWithKeyAndBlankValue_ToStringReturnsKeyEquals()
         {
-            var expected = $@"
-Key=Value";
-            var p1 = Property.Parse(expected);
-            Assert.AreEqual(expected.Trim(), p1.ToString());
-            // parse
+            var p = new Property("key","");
+            Assert.AreEqual("key=", p.ToString());
         }
 
         [TestMethod]
-        public void Property_CreatedWithJonAsKey_PropertyKeyIsJon() => Assert.AreEqual("Jon", _p.Key);
+        public void Property_WhenParseStringWithKeyEqualsVal_ToStringReturnsKeyEqualsVal()
+        {
+            var expected = $"key=val";
+            var p = Property.Parse(expected);
+            Assert.AreEqual(expected.Trim(), p.ToString());
+        }
 
         [TestMethod]
-        public void Property_CreatedWithDoeAsValue_PropertyValueIsDoe() => Assert.AreEqual("Doe", _p.Value);
+        public void Property_CreatedWithNullKey_ThrowArgumentNullException()
+        {
+            Assert.ThrowsException<ArgumentException>(() => new Property(null, "val"));
+        }
 
         [TestMethod]
-        public void Property_CreatedWithJonAsKeyDoeAsValue_ToStringIsJonEqualDoe() => Assert.AreEqual("Jon=Doe", _p.ToString());
-
-        [TestMethod]
-        public void Property_CreatedWithNullKey_ThrowArgumentNullException() => Assert.ThrowsException<ArgumentException>(() => new Property(null, "Doe"));
-
-        [TestMethod]
-        public void Property_CreatedWithEmptyKey_ThrowArgumentNullException() => Assert.ThrowsException<ArgumentException>(() => new Property(string.Empty, "Doe"));
+        public void Property_CreatedWithEmptyKey_ThrowArgumentNullException()
+        {
+            Assert.ThrowsException<ArgumentException>(() => new Property(string.Empty, "val"));
+        }
 
         [TestMethod]
         public void Property_CreatedWithSpaceInKeyAndNotQuoted_IsRecognizedFine()
