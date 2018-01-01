@@ -93,7 +93,6 @@ namespace Ini.Net.Tests
             _s.Add(new Property("key2","val3"));
             TestContext.WriteLine(_s.ToString());
             Assert.AreEqual(4, _s.Properties().Count());
-            _s.Remove("key2","val3");
         }
 
         [TestMethod]
@@ -102,7 +101,6 @@ namespace Ini.Net.Tests
             _s.Add(new Property("key3","val3"), AddProperty.IfKeyIsUnique);
             TestContext.WriteLine(_s.ToString());
             Assert.AreEqual(4, _s.Properties().Count());
-            _s.Remove("key3","val3");
         }
 
         [TestMethod]
@@ -119,7 +117,6 @@ namespace Ini.Net.Tests
             _s.Add(new Property("key4","val4"), AddProperty.UpdateValue);
             TestContext.WriteLine(_s.ToString());
             Assert.AreEqual(4, _s.Properties().Count());
-            _s.Remove("key4","val4");
         }
 
         [TestMethod]
