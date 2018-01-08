@@ -1,6 +1,6 @@
 ﻿namespace Ini.Net
 {
-    public class Header
+    internal class Header
     {
         public string Value { get; }
     }

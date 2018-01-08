@@ -9,7 +9,7 @@ using System.Xml.Serialization;
 
 namespace Ini.Net
 {
-    public static class HelperFunction
+    internal static class HelperFunction
     {
         public static IEnumerable<TResult> Map<TSorce, TResult>(this IEnumerable<TSorce> source,
             Func<TSorce, TResult> selector)

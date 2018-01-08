@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Ini.Net
 {
-    public class Comment
+    internal class Comment
     {
         public string Value { get; }
     }

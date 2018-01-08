@@ -1,6 +1,6 @@
 ﻿namespace Ini.Net
 {
-    public class Footer
+    internal class Footer
     {
         public string Value { get; }
     }
