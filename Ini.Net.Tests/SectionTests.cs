@@ -21,17 +21,70 @@ namespace Ini.Net.Tests
             _s = new Section("sec");
             _s.Add(new Property("key", "val"));
             _s.Add(new Property("key1", "val1"));
-            _s.Add(new Property("key2", "val2"));
+            _s.Add(new Property("kEy2", "val2"));
             _ini = _s.ToString();
             //_s.Comment.Add("This is a section comment.");
             //p.Comment.Add("This is a property comment.");
         }
 
         [TestMethod]
-        public void Section_WhenParseStringWithOneSectionAndTwoProperties_ReturnsPropertyCountOfTwoAndToStringOfSecKeyEqualsValAndKeyOneEqualsValOne()
+        public void Section_PropertiesIgnoreCaseIsFilter_ReturnsThree()
+        {
+            _s.Add(new Property("key", "val1"));
+            _s.Add(new Property("KEY", "val3"));
+            Assert.AreEqual(3, _s.Properties(Filter.IgnoreCaseIs, "key").Count());
+        }
+
+        [TestMethod]
+        public void Section_PropertiesIsFilter_ReturnsTwo()
+        {
+            _s.Add(new Property("key", "val1"));
+            _s.Add(new Property("KEY", "val3"));
+            Assert.AreEqual(2, _s.Properties(Filter.Is, "key").Count());
+        }
+
+        [TestMethod]
+        public void Section_PropertiesIgnoreCaseContainsFilter_ReturnsThree()
+        {
+            Assert.AreEqual(3, _s.Properties(Filter.IgnoreCaseContains, "Y").Count());
+        }
+
+        [TestMethod]
+        public void Section_PropertiesContainsFilter_ReturnsOne()
+        {
+            Assert.AreEqual(1, _s.Properties(Filter.Contains, "E").Count());
+        }
+
+        [TestMethod]
+        public void Section_PropertiesIgnoreCaseEndsWithFilter_ReturnsOne()
+        {
+            Assert.AreEqual(1, _s.Properties(Filter.IgnoreCaseEndsWith, "Y").Count());
+        }
+
+        [TestMethod]
+        public void Section_PropertiesEndsWithFilter_ReturnsOne()
+        {
+            Assert.AreEqual(1, _s.Properties(Filter.EndsWith, "2").Count());
+        }
+
+        [TestMethod]
+        public void Section_PropertiesIgnoreCaseStartsWithFilter_ReturnsThree()
+        {
+            Assert.AreEqual(3, _s.Properties(Filter.IgnoreCaseStartsWith, "kEy").Count());
+        }
+
+        [TestMethod]
+        public void Section_PropertiesStartsWithFilter_ReturnsOne()
+        {
+            Assert.AreEqual(1, _s.Properties(Filter.StartsWith, "kEy").Count());
+        }
+
+        [TestMethod]
+        public void
+            Section_WhenParseStringWithOneSectionAndTwoProperties_ReturnsPropertyCountOfTwoAndToStringOfSecKeyEqualsValAndKeyOneEqualsValOne()
         {
             var actual = Section.Parse(_s.ToString());
-            Assert.AreEqual(3,actual.Properties().Count());
+            Assert.AreEqual(3, actual.Properties().Count());
             Assert.AreEqual(_ini, actual.ToString());
         }
 
@@ -53,15 +106,15 @@ namespace Ini.Net.Tests
         [TestMethod]
         public void Section_FindPropertyByKey_ReturnsPropertyIfExists()
         {
-            var expected = "key2=val2";
+            var expected = "kEy2=val2";
             Assert.AreEqual(expected, _s.Property("key2").ToString());
         }
 
         [TestMethod]
         public void Section_FindPropertyByKeyAndValue_ReturnsPropertyIfExists()
         {
-            var expected = "key2=val2";
-            Assert.AreEqual(expected, _s.Property("key2","val2").ToString());
+            var expected = "kEy2=val2";
+            Assert.AreEqual(expected, _s.Property("key2", "val2").ToString());
         }
 
         [TestMethod]
@@ -83,14 +136,14 @@ namespace Ini.Net.Tests
         [TestMethod]
         public void Section_AddPropertyOptionIfKeyAndValueIsUniqueOnAUniqueProperty_PropertiesCountIsFour()
         {
-            _s.Add(new Property("key3","val3"));
+            _s.Add(new Property("key3", "val3"));
             Assert.AreEqual(4, _s.Properties().Count());
         }
 
         [TestMethod]
         public void Section_AddPropertyOptionIfKeyAndValueIsUniqueOnAUniqueValueButNotKey_PropertiesCountIsThree()
         {
-            _s.Add(new Property("key2","val3"));
+            _s.Add(new Property("key2", "val3"));
             TestContext.WriteLine(_s.ToString());
             Assert.AreEqual(4, _s.Properties().Count());
         }
@@ -98,7 +151,7 @@ namespace Ini.Net.Tests
         [TestMethod]
         public void Section_AddPropertyOptionIfKeyIsUniqueOnAUniqueKeyProperty_PropertiesCountIsFour()
         {
-            _s.Add(new Property("key3","val3"), AddProperty.IfKeyIsUnique);
+            _s.Add(new Property("key3", "val3"), AddProperty.IfKeyIsUnique);
             TestContext.WriteLine(_s.ToString());
             Assert.AreEqual(4, _s.Properties().Count());
         }
@@ -106,7 +159,7 @@ namespace Ini.Net.Tests
         [TestMethod]
         public void Section_AddPropertyOptionIfKeyIsUniqueOnANonUniqueKeyProperty_PropertiesCountIsThree()
         {
-            _s.Add(new Property("key2","val3"), AddProperty.IfKeyIsUnique);
+            _s.Add(new Property("key2", "val3"), AddProperty.IfKeyIsUnique);
             TestContext.WriteLine(_s.ToString());
             Assert.AreEqual(3, _s.Properties().Count());
         }
@@ -114,7 +167,7 @@ namespace Ini.Net.Tests
         [TestMethod]
         public void Section_AddPropertyOptionUpdateValueIfPropertyExistOnUniqueProperty_PropertiesCountIsFour()
         {
-            _s.Add(new Property("key4","val4"), AddProperty.UpdateValue);
+            _s.Add(new Property("key4", "val4"), AddProperty.UpdateValue);
             TestContext.WriteLine(_s.ToString());
             Assert.AreEqual(4, _s.Properties().Count());
         }
@@ -122,7 +175,7 @@ namespace Ini.Net.Tests
         [TestMethod]
         public void Section_AddPropertyOptionUpdateValueIfPropertyExistOnExistingProperty_PropertiesCountIsThree()
         {
-            _s.Add(new Property("key","val++"), AddProperty.UpdateValue);
+            _s.Add(new Property("key", "val++"), AddProperty.UpdateValue);
             TestContext.WriteLine(_s.ToString());
             Assert.AreEqual(3, _s.Properties().Count());
         }

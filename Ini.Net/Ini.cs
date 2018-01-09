@@ -61,9 +61,34 @@ namespace Ini.Net
 
         public void Clear() => _sections.Clear();
 
-        public Section Section(string name) => _sections.FirstOrDefault(s => s.Name.ComparisonEquals(name));
+        public Section Section(string name) => _sections.FirstOrDefault(s => s.Name.IgnoreCaseEquals(name));
 
         public IEnumerable<Section> Sections() => _sections;
+
+        public IEnumerable<Section> Sections(Filter filterName, string search)
+        {
+            switch (filterName)
+            {
+                case Filter.Is:
+                    return _sections.Where(s => s.Name.IgnoreCaseEquals(search, false));
+                case Filter.StartsWith:
+                    return _sections.Where(s => s.Name.IgnoreCaseStartsWith(search, false));
+                case Filter.EndsWith:
+                    return _sections.Where(s => s.Name.IgnoreCaseEndsWith(search, false));
+                case Filter.Contains:
+                    return _sections.Where(s => s.Name.IgnoreCaseContains(search, false));
+                case Filter.IgnoreCaseIs:
+                    return _sections.Where(s => s.Name.IgnoreCaseEquals(search));
+                case Filter.IgnoreCaseStartsWith:
+                    return _sections.Where(s => s.Name.IgnoreCaseStartsWith(search));
+                case Filter.IgnoreCaseEndsWith:
+                    return _sections.Where(s => s.Name.IgnoreCaseEndsWith(search));
+                case Filter.IgnoreCaseContains:
+                    return _sections.Where(s => s.Name.IgnoreCaseContains(search));
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(filterName), filterName, null);
+            }
+        }
 
         public override string ToString() =>
             $"{string.Join($"{Environment.NewLine}{Environment.NewLine}", _sections.Select(s => s))}".Trim();

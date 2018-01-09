@@ -57,7 +57,6 @@ namespace Ini.Net
 
                     _properties.Add(property);
                     return true;
-                    break;
             }
 
             return false;
@@ -78,12 +77,37 @@ namespace Ini.Net
 
         public void Remove(string key, string value) => _properties.Remove(Property(key, value));
 
-        public Property Property(string key) => _properties.FirstOrDefault(p => p.Key.ComparisonEquals(key));
+        public Property Property(string key) => _properties.FirstOrDefault(p => p.Key.IgnoreCaseEquals(key));
 
         public Property Property(string key, string value) =>
-            _properties.FirstOrDefault(p => p.Key.ComparisonEquals(key) && p.Value.ComparisonEquals(value));
+            _properties.FirstOrDefault(p => p.Key.IgnoreCaseEquals(key) && p.Value.IgnoreCaseEquals(value));
 
         public IEnumerable<Property> Properties() => _properties;
+
+        public IEnumerable<Property> Properties(Filter filterKey, string search)
+        {
+            switch (filterKey)
+            {
+                case Filter.Is:
+                    return _properties.Where(p => p.Key.IgnoreCaseEquals(search, false));
+                case Filter.StartsWith:
+                    return _properties.Where(p => p.Key.IgnoreCaseStartsWith(search, false));
+                case Filter.EndsWith:
+                    return _properties.Where(p => p.Key.IgnoreCaseEndsWith(search, false));
+                case Filter.Contains:
+                    return _properties.Where(p => p.Key.IgnoreCaseContains(search, false));
+                case Filter.IgnoreCaseIs:
+                    return _properties.Where(p => p.Key.IgnoreCaseEquals(search));
+                case Filter.IgnoreCaseStartsWith:
+                    return _properties.Where(p => p.Key.IgnoreCaseStartsWith(search));
+                case Filter.IgnoreCaseEndsWith:
+                    return _properties.Where(p => p.Key.IgnoreCaseEndsWith(search));
+                case Filter.IgnoreCaseContains:
+                    return _properties.Where(p => p.Key.IgnoreCaseContains(search));
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(filterKey), filterKey, null);
+            }
+        }
 
         public override string ToString() =>
             $"[{Name}]{Environment.NewLine}{string.Join(Environment.NewLine, _properties.Select(p => p))}".Trim();

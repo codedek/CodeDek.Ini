@@ -37,7 +37,7 @@ namespace Ini.Net
                 BinaryFormatter formatter = new BinaryFormatter();
                 formatter.Serialize(ms, other);
                 ms.Position = 0;
-                return (T) formatter.Deserialize(ms);
+                return (T)formatter.Deserialize(ms);
             }
         }
 
@@ -70,8 +70,16 @@ namespace Ini.Net
             }
         }
 
-        public static bool ComparisonEquals(this string source, string value,
-            StringComparison comparisonType = StringComparison.OrdinalIgnoreCase)
-            => source.Equals(value, comparisonType);
+        public static bool IgnoreCaseEquals(this string source, string value, bool ignoreCase = true)
+            => ignoreCase ? source.Equals(value, StringComparison.OrdinalIgnoreCase) : source.Equals(value);
+
+        public static bool IgnoreCaseStartsWith(this string source, string value, bool ignoreCase = true)
+            => ignoreCase ? source.StartsWith(value, StringComparison.OrdinalIgnoreCase) : source.StartsWith(value);
+
+        public static bool IgnoreCaseEndsWith(this string source, string value, bool ignoreCase = true)
+            => ignoreCase ? source.EndsWith(value, StringComparison.OrdinalIgnoreCase) : source.EndsWith(value);
+
+        public static bool IgnoreCaseContains(this string source, string value, bool ignoreCase = true)
+            => ignoreCase ? source.ToUpper().Contains(value.ToUpper()) : source.Contains(value);
     }
 }
