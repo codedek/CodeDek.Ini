@@ -30,13 +30,23 @@ namespace Ini.Net.Tests
         }
 
         [TestMethod]
-        public void IniDocument_WhenRead_ReturnsPropertyValue()
+        public void IniDocument_ReadIgnoreCaseTrue_ReturnsValueOne()
         {
             var path = Path.Combine(Environment.CurrentDirectory, "test.ini");
 
-            var result = IniDocument.Read(path, "sec1", "key1");
+            var result = IniDocument.Read(path, "sec1", "KEY1");
             TestContext.WriteLine(result);
             Assert.AreEqual("val1", result);
+        }
+
+        [TestMethod]
+        public void IniDocument_ReadIgnoreCaseFalse_ReturnsValueTwo()
+        {
+            var path = Path.Combine(Environment.CurrentDirectory, "test.ini");
+
+            var result = IniDocument.Read(path, "sec1", "KEY1", false);
+            TestContext.WriteLine(result);
+            Assert.AreEqual("val2", result);
         }
 
         [TestMethod]

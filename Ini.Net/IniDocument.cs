@@ -15,10 +15,11 @@ namespace Ini.Net
         {
             var ini = new Ini();
             Section sec = null;
-            foreach (var line in text.SplitToLines().Where(l
-                => !string.IsNullOrEmpty(l)
-                   && !l.StartsWith(";")
-                   && !l.StartsWith("#")))
+            foreach (var line in text.SplitToLines()
+                                     .Where(l
+                                                => !string.IsNullOrEmpty(l) &&
+                                                   !l.StartsWith(";") &&
+                                                   !l.StartsWith("#")))
             {
                 if (line.StartsWith("[") && line.EndsWith("]"))
                 {
@@ -41,10 +42,11 @@ namespace Ini.Net
             if (!File.Exists(path)) return default;
             var ini = new Ini();
             Section sec = null;
-            foreach (var line in File.ReadLines(path).Where(l
-                => !string.IsNullOrEmpty(l)
-                   && !l.StartsWith(";")
-                   && !l.StartsWith("#")))
+            foreach (var line in File.ReadLines(path)
+                                     .Where(l
+                                                => !string.IsNullOrEmpty(l) &&
+                                                   !l.StartsWith(";") &&
+                                                   !l.StartsWith("#")))
             {
                 if (line.StartsWith("[") && line.EndsWith("]"))
                 {
@@ -85,8 +87,35 @@ namespace Ini.Net
             return false;
         }
 
-        public static string Read(string file, string section, string key) =>
-            Load(file)?.Section(section)?.Property(key)?.Value;
+        //public static string Read(string file, string section, string key) =>
+        //    Load(file)?.Section(section)?.Property(key)?.Value;
+
+        public static string Read(string file, string section, string key, bool ignoreCase = true)
+        {
+            if (!File.Exists(file)) return default;
+            var isMatch = false;
+            foreach (var l in File.ReadLines(file)
+                                     .Where(l => !string.IsNullOrEmpty(l) &&
+                                                 !l.StartsWith(";") &&
+                                                 !l.StartsWith("#")))
+            {
+                var line = l.Trim();
+                if (line.StartsWith("[") && line.EndsWith("]"))
+                {
+                    isMatch = section.IgnoreCaseEquals(line.TrimStart('[').TrimEnd(']').Trim());
+                }
+
+                if (isMatch && line.Contains("="))
+                {
+                    if (key.IgnoreCaseEquals(line.Split('=')[0], ignoreCase))
+                    {
+                        return line.Substring(line.IndexOf('=') + 1);
+                    }
+                }
+            }
+
+            return default;
+        }
 
         public static string SerializeObject(object obj)
         {
