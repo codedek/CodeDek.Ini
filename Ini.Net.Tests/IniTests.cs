@@ -32,6 +32,18 @@ namespace Ini.Net.Tests
         }
 
         [TestMethod]
+        public void Ini_SectionWithArgsNameDelIgnoreCaseTrue_IsNotNullReturnsTrue()
+        {
+            Assert.IsNotNull(_i.Section("DEL",true));
+        }
+
+        [TestMethod]
+        public void Ini_SectionWithArgsNameDelIgnoreCaseFalse_IsNullReturnsTrue()
+        {
+            Assert.IsNull(_i.Section("DEL", false));
+        }
+
+        [TestMethod]
         public void Ini_SectionsIgnoreCaseIsFilter_ReturnsThree()
         {
             var s = new Section("SEC");

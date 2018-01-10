@@ -61,7 +61,7 @@ namespace Ini.Net
 
         public void Clear() => _sections.Clear();
 
-        public Section Section(string name) => _sections.FirstOrDefault(s => s.Name.IgnoreCaseEquals(name));
+        public Section Section(string name, bool ignoreCase = true) => _sections.FirstOrDefault(s => s.Name.IgnoreCaseEquals(name, ignoreCase));
 
         public IEnumerable<Section> Sections() => _sections;
 
