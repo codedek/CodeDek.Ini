@@ -77,7 +77,7 @@ namespace Ini.Net
 
         public void Remove(string key, string value) => _properties.Remove(Property(key, value));
 
-        public Property Property(string key) => _properties.FirstOrDefault(p => p.Key.IgnoreCaseEquals(key));
+        public Property Property(string key, bool ignoreCase = true) => _properties.FirstOrDefault(p => p.Key.IgnoreCaseEquals(key,ignoreCase));
 
         public Property Property(string key, string value) =>
             _properties.FirstOrDefault(p => p.Key.IgnoreCaseEquals(key) && p.Value.IgnoreCaseEquals(value));

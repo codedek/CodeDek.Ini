@@ -104,6 +104,19 @@ namespace Ini.Net.Tests
         }
 
         [TestMethod]
+        public void Section_PropertyWithArgsKeyAndIgnoreCaseTrue_ReturnsVal()
+        {
+            Assert.AreEqual("val", _s.Property("Key", true).Value);
+        }
+
+        [TestMethod]
+        public void Section_PropertyWithArgsKeyAndIgnoreCaseFalse_ReturnsVal1()
+        {
+            _s.Add(new Property("Key", "val1"));
+            Assert.AreEqual("val1", _s.Property("Key", false).Value);
+        }
+
+        [TestMethod]
         public void Section_FindPropertyByKey_ReturnsPropertyIfExists()
         {
             var expected = "kEy2=val2";
