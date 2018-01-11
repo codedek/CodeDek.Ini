@@ -42,6 +42,13 @@ namespace Ini.Net.Tests
         }
 
         [TestMethod]
+        public void Property_WhenInstantiatedWithKeyAndNullValue_ToStringReturnsKeyEquals()
+        {
+            var p = new Property("key",null);
+            Assert.AreEqual("key=", p.ToString());
+        }
+
+        [TestMethod]
         public void Property_WhenParseStringWithKeyEqualsVal_ToStringReturnsKeyEqualsVal()
         {
             var expected = $"key=val";

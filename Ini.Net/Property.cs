@@ -16,7 +16,7 @@ namespace Ini.Net
             if (string.IsNullOrWhiteSpace(key)) throw new ArgumentException("Please enter a valid key", nameof(key));
 
             Key = key.Trim();
-            Value = value.Trim();
+            Value = value?.Trim();
         }
 
         public Property(Property other)
