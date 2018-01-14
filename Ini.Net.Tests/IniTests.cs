@@ -162,7 +162,7 @@ namespace CodeDek.Ini.Tests
         [TestMethod]
         public void Ini_WhenAddSectionOptionOverwriteExistingSetOnANewSectionWithUniqueName_SectionsCountIsThree()
         {
-            _i.Add(new Section("unique"), AddSection.OverwriteExisting);
+            _i.Add(new Section("unique"), SectionAddOption.Overwrite);
             TestContext.WriteLine(_i.ToString());
             Assert.AreEqual(3, _i.Sections().Count());
         }
@@ -171,7 +171,7 @@ namespace CodeDek.Ini.Tests
         public void
             Ini_WhenAddSectionOptionOverwriteExistingSetOnANewSectionWithExistingName_TheExistingSectionIsOverwrittenWithTheNewSectionAndSectionsCountIsTwo()
         {
-            _i.Add(new Section("sec"), AddSection.OverwriteExisting);
+            _i.Add(new Section("sec"), SectionAddOption.Overwrite);
             TestContext.WriteLine(_i.ToString());
             Assert.AreEqual(2, _i.Sections().Count());
             Assert.AreEqual(0, _i.Section("sec").Properties().Count());
@@ -180,7 +180,7 @@ namespace CodeDek.Ini.Tests
         [TestMethod]
         public void Ini_WhenAddSectionOptionMergeWithExistingSetOnANewSectionWithUniqueName_SectionsCountIsThree()
         {
-            _i.Add(new Section("unique"), AddSection.MergeWithExisting);
+            _i.Add(new Section("unique"), SectionAddOption.Merge);
             TestContext.WriteLine(_i.ToString());
             Assert.AreEqual(3, _i.Sections().Count());
         }
@@ -193,7 +193,7 @@ namespace CodeDek.Ini.Tests
             s.Add(new Property("key1", "val1"));
             s.Add(new Property("key1", "happy new year"));
             s.Add(new Property("add", "me"));
-            _i.Add(s, AddSection.MergeWithExisting);
+            _i.Add(s, SectionAddOption.Merge);
             TestContext.WriteLine(_i.ToString());
 
             Assert.AreEqual(2, _i.Sections().Count());
@@ -203,7 +203,7 @@ namespace CodeDek.Ini.Tests
         [TestMethod]
         public void Ini_WhenAddSectionOptionMergeAndUpdateExistingSetOnANewSectionWithUniqueName_SectionsCountIsThree()
         {
-            _i.Add(new Section("unique"), AddSection.MergeAndUpdateExisting);
+            _i.Add(new Section("unique"), SectionAddOption.MergeOverwrite);
             TestContext.WriteLine(_i.ToString());
             Assert.AreEqual(3, _i.Sections().Count());
         }
@@ -216,12 +216,24 @@ namespace CodeDek.Ini.Tests
             s.Add(new Property("key1", "val1"));
             s.Add(new Property("key1", "happy new year"));
             s.Add(new Property("add", "me"));
-            _i.Add(s, AddSection.MergeAndUpdateExisting);
+            _i.Add(s, SectionAddOption.MergeOverwrite);
             TestContext.WriteLine(_i.ToString());
 
             Assert.AreEqual(2, _i.Sections().Count());
             Assert.AreEqual(3, _i.Section("sec").Properties().Count());
             Assert.AreEqual("happy new year", _i.Section("sec").Property("key1").Value);
+        }
+
+        [TestMethod]
+        public void Ini_ParseEmptyString_ReturnsNullSection()
+        {
+            Assert.IsNull(Ini.Parse(""));
+        }
+
+        [TestMethod]
+        public void Ini_ParseNullString_ReturnsNullSection()
+        {
+            Assert.IsNull(Ini.Parse(null));
         }
     }
 }

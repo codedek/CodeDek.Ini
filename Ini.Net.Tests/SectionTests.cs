@@ -161,7 +161,7 @@ namespace CodeDek.Ini.Tests
         [TestMethod]
         public void Section_AddPropertyOptionIfKeyIsUniqueOnAUniqueKeyProperty_PropertiesCountIsFour()
         {
-            _s.Add(new Property("key3", "val3"), AddProperty.IfKeyIsUnique);
+            _s.Add(new Property("key3", "val3"), PropertyAddOption.KeyIsUnique);
             TestContext.WriteLine(_s.ToString());
             Assert.AreEqual(4, _s.Properties().Count());
         }
@@ -169,7 +169,7 @@ namespace CodeDek.Ini.Tests
         [TestMethod]
         public void Section_AddPropertyOptionIfKeyIsUniqueOnANonUniqueKeyProperty_PropertiesCountIsThree()
         {
-            _s.Add(new Property("key2", "val3"), AddProperty.IfKeyIsUnique);
+            _s.Add(new Property("key2", "val3"), PropertyAddOption.KeyIsUnique);
             TestContext.WriteLine(_s.ToString());
             Assert.AreEqual(3, _s.Properties().Count());
         }
@@ -177,7 +177,7 @@ namespace CodeDek.Ini.Tests
         [TestMethod]
         public void Section_AddPropertyOptionUpdateValueIfPropertyExistOnUniqueProperty_PropertiesCountIsFour()
         {
-            _s.Add(new Property("key4", "val4"), AddProperty.UpdateValue);
+            _s.Add(new Property("key4", "val4"), PropertyAddOption.Overwrite);
             TestContext.WriteLine(_s.ToString());
             Assert.AreEqual(4, _s.Properties().Count());
         }
@@ -185,9 +185,21 @@ namespace CodeDek.Ini.Tests
         [TestMethod]
         public void Section_AddPropertyOptionUpdateValueIfPropertyExistOnExistingProperty_PropertiesCountIsThree()
         {
-            _s.Add(new Property("key", "val++"), AddProperty.UpdateValue);
+            _s.Add(new Property("key", "val++"), PropertyAddOption.Overwrite);
             TestContext.WriteLine(_s.ToString());
             Assert.AreEqual(3, _s.Properties().Count());
+        }
+
+        [TestMethod]
+        public void Section_ParseEmptyString_ReturnsNullSection()
+        {
+            Assert.IsNull(Section.Parse(""));
+        }
+
+        [TestMethod]
+        public void Section_ParseNullString_ReturnsNullSection()
+        {
+            Assert.IsNull(Section.Parse(null));
         }
 
         //[TestMethod]

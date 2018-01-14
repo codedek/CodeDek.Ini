@@ -7,8 +7,8 @@ namespace CodeDek.Ini
 {
     public class Section
     {
-        private const string _sectionPattern = @"^(?:\[(?<sectionName>.+)?\])(?:[\w\W](?!^\[.+\]))+$";
-        private readonly IList<Property> _properties = new List<Property>();
+        const string _sectionPattern = @"^(?:\[(?<sectionName>.+)?\])(?:[\w\W](?!^\[.+\]))+$";
+        readonly List<Property> _properties = new List<Property>();
 
         public string Name { get; }
 
@@ -29,34 +29,34 @@ namespace CodeDek.Ini
             _properties = other?.Properties().ToList();
         }
 
-        public bool Add(Property property, AddProperty option = AddProperty.IfKeyAndValueIsUnique)
+        public bool Add(Property property, PropertyAddOption addOption = PropertyAddOption.PropertyIsUnique)
         {
             if (property == null) return false;
-            switch (option)
+
+            switch (addOption)
             {
-                case AddProperty.IfKeyIsUnique:
+                case PropertyAddOption.KeyIsUnique:
                     if (Property(property.Key) == null) _properties.Add(property);
 
                     return true;
-                case AddProperty.IfKeyAndValueIsUnique:
+                case PropertyAddOption.PropertyIsUnique:
                     if (Property(property.Key, property.Value) == null) _properties.Add(property);
 
                     return true;
-                case AddProperty.UpdateValue:
-                    if (Property(property.Key, property.Value) != null)
+                case PropertyAddOption.Overwrite:
+                    var index = _properties
+                        .FindIndex(p => p.Key.Equals(property.Key, StringComparison.OrdinalIgnoreCase));
+
+                    if (index <= -1)
                     {
-                        Property(property.Key, property.Value).Value = property.Value;
+                        _properties.Add(property);
+                        return true;
+                    } else
+                    {
+                        _properties.RemoveAt(index);
+                        _properties.Insert(index, property);
                         return true;
                     }
-
-                    if (Property(property.Key) != null)
-                    {
-                        Property(property.Key).Value = property.Value;
-                        return true;
-                    }
-
-                    _properties.Add(property);
-                    return true;
             }
 
             return false;
@@ -64,10 +64,14 @@ namespace CodeDek.Ini
 
         public static Section Parse(string text)
         {
+            if (string.IsNullOrEmpty(text)) return default;
+
             var s = Regex.Match(text.Trim(), _sectionPattern);
             if (!s.Success) return default;
+
             var sec = new Section(s.Groups["sectionName"].Value);
-            s.Value.SplitToLines().ForEach(l => sec.Add(CodeDek.Ini.Property.Parse(l)));
+            foreach (var l in s.Value.SplitToLines())
+                sec.Add(CodeDek.Ini.Property.Parse(l));
             return sec;
         }
 
@@ -77,10 +81,13 @@ namespace CodeDek.Ini
 
         public void Remove(string key, string value) => _properties.Remove(Property(key, value));
 
-        public Property Property(string key, bool ignoreCase = true) => _properties.FirstOrDefault(p => p.Key.IgnoreCaseEquals(key,ignoreCase));
+        public Property Property(string key, bool ignoreCase = true) =>
+            _properties.Find(p => ignoreCase
+                                 ? p.Key.Equals(key, StringComparison.OrdinalIgnoreCase)
+                                 : p.Key.Equals(key));
 
         public Property Property(string key, string value) =>
-            _properties.FirstOrDefault(p => p.Key.IgnoreCaseEquals(key) && p.Value.IgnoreCaseEquals(value));
+            _properties.Find(p => p.Key.IgnoreCaseEquals(key) && p.Value.IgnoreCaseEquals(value));
 
         public IEnumerable<Property> Properties() => _properties;
 
@@ -110,6 +117,7 @@ namespace CodeDek.Ini
         }
 
         public override string ToString() =>
-            $"[{Name}]{Environment.NewLine}{string.Join(Environment.NewLine, _properties.Select(p => p))}".Trim();
+            $"[{Name}]{Environment.NewLine}{string.Join(Environment.NewLine, _properties.FindAll(p => p.ToString() != ""))}"
+                .Trim();
     }
 }

@@ -76,22 +76,34 @@ p3key=p3val";
             Assert.AreEqual(2, i.Section("section2name").Properties().Count());
         }
 
-//        [TestMethod]
-//        public void IniDocument_WhenSerializeObject_ReturnsIniString()
-//        {
-//            var ini = @"
-//[Person]
-//name=jon
-//age=6";
-//            var p = new Person();
-//            p.Parent = new Parent { Name = "Jon", Age = 6 };
-//            p.Child = new Child { Name = "Phil", Age = 2 };
+        [TestMethod]
+        public void IniDocument_ParseEmptyString_ReturnsNullSection()
+        {
+            Assert.IsNull(IniDocument.Parse(""));
+        }
 
-//            var json = JsonConvert.SerializeObject(p);
-//            TestContext.WriteLine(json);
-//            var p1 = JsonConvert.DeserializeObject<Person>(json);
-//            TestContext.WriteLine(p1.ToString());
-//        }
+        [TestMethod]
+        public void IniDocument_ParseNullString_ReturnsNullSection()
+        {
+            Assert.IsNull(IniDocument.Parse(null));
+        }
+
+        //        [TestMethod]
+        //        public void IniDocument_WhenSerializeObject_ReturnsIniString()
+        //        {
+        //            var ini = @"
+        //[Person]
+        //name=jon
+        //age=6";
+        //            var p = new Person();
+        //            p.Parent = new Parent { Name = "Jon", Age = 6 };
+        //            p.Child = new Child { Name = "Phil", Age = 2 };
+
+        //            var json = JsonConvert.SerializeObject(p);
+        //            TestContext.WriteLine(json);
+        //            var p1 = JsonConvert.DeserializeObject<Person>(json);
+        //            TestContext.WriteLine(p1.ToString());
+        //        }
     }
 
     //public class Person

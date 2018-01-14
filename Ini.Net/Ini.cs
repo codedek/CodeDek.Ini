@@ -7,8 +7,8 @@ namespace CodeDek.Ini
 {
     public class Ini
     {
-        private const string _sectionPattern = @"(?:\[(?<sectionName>\w+)\])(?:[\w\W](?!\[\w+\]))+";
-        private readonly IList<Section> _sections = new List<Section>();
+        const string _sectionPattern = @"(?:\[(?<sectionName>\w+)\])(?:[\w\W](?!\[\w+\]))+";
+        readonly List<Section> _sections = new List<Section>();
 
         public Ini()
         {
@@ -16,30 +16,31 @@ namespace CodeDek.Ini
 
         public Ini(Ini other) => _sections = other?.Sections().ToList();
 
-        public bool Add(Section section, AddSection option = AddSection.IfNameIsUnique)
+        public bool Add(Section section, SectionAddOption addOption = SectionAddOption.NameIsUnique)
         {
             if (section == null) return false;
-            switch (option)
+
+            switch (addOption)
             {
-                case AddSection.IfNameIsUnique:
+                case SectionAddOption.NameIsUnique:
                     if (Section(section.Name) == null) _sections.Add(section);
 
                     return true;
-                case AddSection.MergeWithExisting:
+                case SectionAddOption.Merge:
                     if (Section(section.Name) == null) _sections.Add(section);
                     else
                         foreach (var property in section.Properties())
                             Section(section.Name).Add(property);
 
                     return true;
-                case AddSection.MergeAndUpdateExisting:
+                case SectionAddOption.MergeOverwrite:
                     if (Section(section.Name) == null) _sections.Add(section);
                     else
                         foreach (var property in section.Properties())
-                            Section(section.Name).Add(property, AddProperty.UpdateValue);
+                            Section(section.Name).Add(property, PropertyAddOption.Overwrite);
 
                     return true;
-                case AddSection.OverwriteExisting:
+                case SectionAddOption.Overwrite:
                     var s = Section(section.Name);
                     if (s == null) _sections.Add(section);
                     else _sections[_sections.IndexOf(s)] = section;
@@ -52,8 +53,10 @@ namespace CodeDek.Ini
 
         public static Ini Parse(string text)
         {
+            if (string.IsNullOrEmpty(text)) return default;
             var ini = new Ini();
-            Regex.Matches(text.Trim(), _sectionPattern).ForEach<Match>(m => ini.Add(CodeDek.Ini.Section.Parse(m.Value)));
+            foreach (Match m in Regex.Matches(text.Trim(), _sectionPattern))
+                ini.Add(CodeDek.Ini.Section.Parse(m.Value));
             return ini;
         }
 
@@ -61,7 +64,10 @@ namespace CodeDek.Ini
 
         public void Clear() => _sections.Clear();
 
-        public Section Section(string name, bool ignoreCase = true) => _sections.FirstOrDefault(s => s.Name.IgnoreCaseEquals(name, ignoreCase));
+        public Section Section(string name, bool ignoreCase = true) =>
+            _sections.Find(s => ignoreCase
+                               ? s.Name.Equals(name, StringComparison.OrdinalIgnoreCase)
+                               : s.Name.Equals(name));
 
         public IEnumerable<Section> Sections() => _sections;
 

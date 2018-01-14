@@ -7,49 +7,8 @@ using System.Xml.Serialization;
 
 namespace CodeDek.Ini
 {
-    internal static class HelperFunction
+    internal static class StringExtensions
     {
-        public static IEnumerable<TResult> Map<TSorce, TResult>(this IEnumerable<TSorce> source,
-            Func<TSorce, TResult> selector)
-        {
-            foreach (var item in source)
-                yield return selector(item);
-        }
-
-        public static void ForEach<T>(this IEnumerable<T> source, Action<T> action)
-        {
-            foreach (var item in source)
-                action(item);
-        }
-
-        public static void ForEach<T>(this MatchCollection source, Action<T> action)
-        {
-            foreach (T item in source)
-                action(item);
-        }
-
-        public static T DeepCopy<T>(this T other)
-        {
-            using (MemoryStream ms = new MemoryStream())
-            {
-                BinaryFormatter formatter = new BinaryFormatter();
-                formatter.Serialize(ms, other);
-                ms.Position = 0;
-                return (T)formatter.Deserialize(ms);
-            }
-        }
-
-        public static string SerializeObject<T>(this T toSerialize)
-        {
-            XmlSerializer xmlSerializer = new XmlSerializer(toSerialize.GetType());
-
-            using (StringWriter textWriter = new StringWriter())
-            {
-                xmlSerializer.Serialize(textWriter, toSerialize);
-                return textWriter.ToString();
-            }
-        }
-
         public static IEnumerable<string> SplitToLines(this string input)
         {
             if (input == null)

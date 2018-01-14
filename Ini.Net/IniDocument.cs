@@ -7,11 +7,11 @@ namespace CodeDek.Ini
     {
         public static Ini Parse(string text)
         {
+            if (string.IsNullOrEmpty(text)) return default;
             var ini = new Ini();
             Section sec = null;
             foreach (var line in text.SplitToLines()
-                                     .Where(l
-                                                => !string.IsNullOrEmpty(l) &&
+                                     .Where(l => !string.IsNullOrEmpty(l) &&
                                                    !l.StartsWith(";") &&
                                                    !l.StartsWith("#")))
             {

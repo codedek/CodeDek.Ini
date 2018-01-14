@@ -5,7 +5,7 @@ namespace CodeDek.Ini
 {
     public class Property
     {
-        private const string _propertyPattern = @"^(?'key'[^\[#; ]+?)=(?'value'.*)$";
+        const string _propertyPattern = @"^(?'key'[^\[#; ]+?)=(?'value'.*)$";
 
         public string Key { get; }
         public string Value { get; set; }
