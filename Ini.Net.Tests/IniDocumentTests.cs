@@ -1,12 +1,9 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Newtonsoft.Json;
-using System.Linq;
+﻿using System;
 using System.IO;
+using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Ini.Net.Tests
+namespace CodeDek.Ini.Tests
 {
     [TestClass]
     public class IniDocumentTests

@@ -1,11 +1,8 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System;
 using System.Linq;
-using System.Text;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Ini.Net.Tests
+namespace CodeDek.Ini.Tests
 {
     [TestClass]
     public class SectionTests

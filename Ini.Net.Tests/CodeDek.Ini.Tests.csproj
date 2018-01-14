@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Ini.Net\Ini.Net.csproj" />
+    <ProjectReference Include="..\Ini.Net\CodeDek.Ini.csproj" />
   </ItemGroup>
 
 </Project>

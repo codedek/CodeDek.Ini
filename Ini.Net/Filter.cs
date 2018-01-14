@@ -1,4 +1,4 @@
-﻿namespace Ini.Net
+﻿namespace CodeDek.Ini
 {
     public enum Filter
     {

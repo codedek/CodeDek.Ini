@@ -1,9 +1,7 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Ini.Net.Tests
+namespace CodeDek.Ini.Tests
 {
     [TestClass]
     public class PropertyTests

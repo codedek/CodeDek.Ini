@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace Ini.Net
+namespace CodeDek.Ini
 {
     public class Ini
     {
@@ -53,7 +53,7 @@ namespace Ini.Net
         public static Ini Parse(string text)
         {
             var ini = new Ini();
-            Regex.Matches(text.Trim(), _sectionPattern).ForEach<Match>(m => ini.Add(Net.Section.Parse(m.Value)));
+            Regex.Matches(text.Trim(), _sectionPattern).ForEach<Match>(m => ini.Add(CodeDek.Ini.Section.Parse(m.Value)));
             return ini;
         }
 

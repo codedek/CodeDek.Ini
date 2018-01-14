@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace Ini.Net
+namespace CodeDek.Ini
 {
     public class Section
     {
@@ -67,7 +67,7 @@ namespace Ini.Net
             var s = Regex.Match(text.Trim(), _sectionPattern);
             if (!s.Success) return default;
             var sec = new Section(s.Groups["sectionName"].Value);
-            s.Value.SplitToLines().ForEach(l => sec.Add(Net.Property.Parse(l)));
+            s.Value.SplitToLines().ForEach(l => sec.Add(CodeDek.Ini.Property.Parse(l)));
             return sec;
         }
 

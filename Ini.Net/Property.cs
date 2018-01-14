@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Ini.Net
+namespace CodeDek.Ini
 {
     public class Property
     {

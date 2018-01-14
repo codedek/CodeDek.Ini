@@ -1,16 +1,12 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Ini.Net.Tests
+namespace CodeDek.Ini.Tests
 {
     [TestClass]
     public class IniTests
     {
-        Ini _i;
+        CodeDek.Ini.Ini _i;
         string _ini;
 
         public TestContext TestContext { get; set; }
@@ -18,7 +14,7 @@ namespace Ini.Net.Tests
         [TestInitialize]
         public void Setup()
         {
-            _i = new Ini();
+            _i = new CodeDek.Ini.Ini();
             var s = new Section("sec");
             s.Add(new Property("key1", "val1"));
             s.Add(new Property("key2", "val2"));
@@ -126,7 +122,7 @@ namespace Ini.Net.Tests
         [TestMethod]
         public void Ini_WhenInstantiatedWithAnotherIni_CreatesACopyOfThatIni()
         {
-            var i = new Ini(_i);
+            var i = new CodeDek.Ini.Ini(_i);
             Assert.AreNotEqual(i, _i);
         }
 
@@ -134,7 +130,7 @@ namespace Ini.Net.Tests
         public void
             Ini_WhenParseAnIniStringWithTwoSectionsEachWithTwoProperties_ReturnsSectionsCountOfTwoAndEachPropertiesCountOfTwo()
         {
-            var i = Ini.Parse(_ini);
+            var i = CodeDek.Ini.Ini.Parse(_ini);
             Assert.AreEqual(2, i.Sections().Count());
             Assert.AreEqual(2, i.Section("sec").Properties().Count());
             Assert.AreEqual(2, i.Section("del").Properties().Count());

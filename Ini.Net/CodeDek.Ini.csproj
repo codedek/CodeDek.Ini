@@ -2,16 +2,18 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Authors>codedek</Authors>
-    <Company>compu(code)</Company>
-    <Copyright>Copyright © 2018 Compu(code). All Rights Reserved.</Copyright>
-    <Description>Fully managed .net library to work with ini configuration files. Features includes read/write/load/parse ini files and build and work with ini strings in memory.</Description>
+    <Authors>CodeDek</Authors>
+    <Company>CodeDek</Company>
+    <Copyright>Copyright © 2018 CodeDek. All Rights Reserved.</Copyright>
+    <Description>Fully managed .net library for working with ini configuration files. Features includes read/write/load/parse ini files and build and work with ini strings in memory.</Description>
     <AssemblyVersion>0.1.0.0</AssemblyVersion>
     <FileVersion>0.1.0.0</FileVersion>
     <Version>0.1</Version>
     <NeutralLanguage>en</NeutralLanguage>
-    <RepositoryUrl>https://github.com/codedek/Ini.Net</RepositoryUrl>
+    <RepositoryUrl>https://github.com/codedek/CodeDek.Ini</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
+    <PackageTags>ini,config,section,property,key,value</PackageTags>
+    <PackageProjectUrl>https://github.com/codedek/CodeDek.Ini</PackageProjectUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
