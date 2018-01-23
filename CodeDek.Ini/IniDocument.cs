@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 
 namespace CodeDek.Ini
@@ -76,6 +78,22 @@ namespace CodeDek.Ini
                         ini.Section(section).Add(new Property(key, value));
                     File.WriteAllText(file, ini.ToString());
                     return true;
+            }
+
+            return false;
+        }
+
+        public static bool Write(Ini ini, string file)
+        {
+            if (ini == null || string.IsNullOrEmpty(file)) return false;
+
+            try
+            {
+                File.WriteAllText(file,ini.ToString());
+                return true;
+            } catch (Exception e)
+            {
+                Debug.WriteLine($"Write Failed with message: {e.Message}");
             }
 
             return false;
