@@ -4,7 +4,7 @@
 
 ## Usage
 
-### [Read](#read) - Create an ini config file and save to local storage
+### [Write](#write) - Create an ini config file and save to local storage
 
   > One way
 
@@ -58,7 +58,7 @@
   IniDocument.Write(file, "Section1", "fizz", "bazz");
   ```
 
-### [Write](#write) - Load a property's value or an ini config file into memory
+### [Read](#read) - Load a property's value or an ini config file into memory
 
   ```CSharp
   var result = IniDocument.Read("C:\\file.ini", "Section1", "key");
