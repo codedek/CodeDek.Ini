@@ -22,7 +22,7 @@
 
   var ini = IniDocument.Parse(iniString);
 
-  IniDocument.Write(ini, "C:\\file.ini");
+  IniDocument.Write("C:\\file.ini", ini);
   ```
 
   > Another
