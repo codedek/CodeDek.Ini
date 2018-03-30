@@ -83,7 +83,7 @@ namespace CodeDek.Ini
             return false;
         }
 
-        public static bool Write(Ini ini, string file)
+        public static bool Write(string file, Ini ini)
         {
             if (ini == null || string.IsNullOrEmpty(file)) return false;
 
