@@ -40,7 +40,7 @@
   ini.Section("Section2").Add(new Property("age","0"));
   ini.Section("Section2").Add(new Property("color","green"));
 
-  IniDocument.Write(ini, "C:\\file.ini");
+  IniDocument.Write("C:\\file.ini", ini);
   ```
 
   > And yet another
