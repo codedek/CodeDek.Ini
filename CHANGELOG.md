@@ -11,11 +11,15 @@ download in the
 
 These are the changes to each version that has been officially released.
 
-## 1.0
+## 0.2
+
+- [ ] Changed Readme to give some help on usage of the api.
+
+## 0.1
 
 - [ ] Initial release
 
 # Development
-## 0.1
+## 0.0
 
 - [x] Initial commit
