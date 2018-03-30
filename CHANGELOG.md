@@ -13,11 +13,11 @@ These are the changes to each version that has been officially released.
 
 ## 0.2
 
-- [ ] Changed Readme to give some help on usage of the api.
+- [x] Changed Readme to give some help on usage of the api.
 
 ## 0.1
 
-- [ ] Initial release
+- [x] Initial release
 
 # Development
 ## 0.0
