@@ -1,6 +1,7 @@
 # CodeDek.Ini
 
 [![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)](https://github.com/codedek/CodeDek.Ini/blob/master/LICENSE.txt)
+[![Github Releases](https://img.shields.io/github/downloads/atom/atom/latest/total.svg)](https://github.com/codedek/CodeDek.Ini/releases/tag/v.0.1)
 
 >A fully managed api written in C# for working with .ini configuration files.
 
