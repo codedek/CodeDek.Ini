@@ -1,3 +1,5 @@
+[![GitHub license](https://img.shields.io/github/license/codedek/CodeDek.Ini.svg)](https://github.com/codedek/CodeDek.Ini/blob/master/LICENSE)
+
 # CodeDek.Ini
 
 >A fully managed api written in C# for working with .ini configuration files.
