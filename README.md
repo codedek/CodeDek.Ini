@@ -1,4 +1,5 @@
 [![GitHub license](https://img.shields.io/github/license/codedek/CodeDek.Ini.svg)](https://github.com/codedek/CodeDek.Ini/blob/master/LICENSE)
+[![GitHub release](https://img.shields.io/github/release/codedek/CodeDek.Ini.svg)](https://github.com/codedek/CodeDek.Ini/releases/latest)
 
 # CodeDek.Ini
 
