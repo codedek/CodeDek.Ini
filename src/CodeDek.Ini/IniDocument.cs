@@ -98,7 +98,8 @@ namespace CodeDek.Ini
 
             return false;
         }
-
+        
+        // Disabled because its slower than its overload
         //public static string Read(string file, string section, string key) =>
         //    Load(file)?.Section(section)?.Property(key)?.Value;
 
@@ -128,15 +129,17 @@ namespace CodeDek.Ini
 
             return default;
         }
+        
+        // not yet implemented.
+        //public static string SerializeObject(object obj)
+        //{
+        //    return default;
+        //}
 
-        public static string SerializeObject(object obj)
-        {
-            return default;
-        }
-
-        public static T DeserializeObject<T>(string obj)
-        {
-            return default;
-        }
+        // not yet implemented.
+        //public static T DeserializeObject<T>(string obj)
+        //{
+        //    return default;
+        //}
     }
 }
