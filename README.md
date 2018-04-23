@@ -49,7 +49,7 @@
   IniDocument.Write("C:\\file.ini", ini);
   ```
 
-  > Linq-Like
+  > Linq-Like Functional construction
 
   ```csharp
   var ini = new Ini(new Section("Root",
