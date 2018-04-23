@@ -13,7 +13,7 @@ These are the changes to each version that has been officially released.
 
 ## 0.2
 
-- [x] Changed Readme to give some help on usage of the api.
+- [x] New Linq-Like way of building Ini document.
 
 ## 0.1
 

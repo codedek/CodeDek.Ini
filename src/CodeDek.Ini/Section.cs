@@ -20,6 +20,13 @@ namespace CodeDek.Ini
       Name = name.Trim().TrimStart('[').TrimEnd(']').Trim();
     }
 
+    public Section(string name, params Property[] properties) : this(name)
+    {
+      foreach (var property in properties)
+        if (property != null)
+          Add(property);
+    }
+
     public Section(Section other)
     {
       if (other == null)
@@ -131,5 +138,7 @@ namespace CodeDek.Ini
     public override string ToString() =>
       $"[{Name}]{Environment.NewLine}{string.Join(Environment.NewLine, _properties.FindAll(p => p.ToString() != ""))}"
         .Trim();
+
+    public static bool IsNullOrEmpty(Section section) => section?.Properties().Any() == false;
   }
 }

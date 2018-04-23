@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.27130.2020
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeDek.Ini", "src\CodeDek.Ini\CodeDek.Ini.csproj", "{64AB15B4-A2BD-4499-BF68-75CD128BBDFC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeDek.Ini.Tests", ",", "{0B9A7EF8-B13F-467D-87D7-D073B1448ADB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeDek.Ini.Tests", "src\CodeDek.Ini.Tests\CodeDek.Ini.Tests.csproj",", "{0B9A7EF8-B13F-467D-87D7-D073B1448ADB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D0C2B524-AFF7-4364-A356-A662F0AC23DF}"
 	ProjectSection(SolutionItems) = preProject

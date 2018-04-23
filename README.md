@@ -49,6 +49,23 @@
   IniDocument.Write("C:\\file.ini", ini);
   ```
 
+  > Linq-Like
+
+  ```csharp
+  var ini = new Ini(new Section("Root",
+                                    new Property("ID", "123"),
+                                    new Property("Name", "Jon"),
+                                    new Property("Gender", "true"),
+                                    new Property("DateOfBirth", "1995-08-29T00:00:00")),
+                    new Section("Root2",
+                                    new Property("ID", "456"),
+                                    new Property("Name", "Jane"),
+                                    new Property("Gender", "false"),
+                                    new Property("DateOfBirth", "1997-10-02T00:00:00")));
+
+  IniDocument.Write("C:\\file.ini", ini);
+  ```
+
   > And yet another
 
   ```csharp

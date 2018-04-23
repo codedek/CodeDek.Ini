@@ -14,27 +14,38 @@ namespace CodeDek.Ini
     {
     }
 
-    public Ini(Ini other) => _sections = other?.Sections().ToList();
+    public Ini(params Section[] sections)
+    {
+      foreach (var section in sections)
+        if (!CodeDek.Ini.Section.IsNullOrEmpty(section))
+          Add(section);
+    }
+
+    public Ini(Ini other) => _sections=other?.Sections().ToList();
 
     public bool Add(Section section, SectionAddOption addOption = SectionAddOption.NameIsUnique)
     {
-      if (section == null) return false;
+      if (section==null)
+        return false;
 
       switch (addOption)
       {
         case SectionAddOption.NameIsUnique:
-          if (Section(section.Name) == null) _sections.Add(section);
+          if (Section(section.Name)==null)
+            _sections.Add(section);
 
           return true;
         case SectionAddOption.Merge:
-          if (Section(section.Name) == null) _sections.Add(section);
+          if (Section(section.Name)==null)
+            _sections.Add(section);
           else
             foreach (var property in section.Properties())
               Section(section.Name).Add(property);
 
           return true;
         case SectionAddOption.MergeOverwrite:
-          if (Section(section.Name) == null) _sections.Add(section);
+          if (Section(section.Name)==null)
+            _sections.Add(section);
           else
             foreach (var property in section.Properties())
               Section(section.Name).Add(property, PropertyAddOption.Overwrite);
@@ -42,8 +53,10 @@ namespace CodeDek.Ini
           return true;
         case SectionAddOption.Overwrite:
           var s = Section(section.Name);
-          if (s == null) _sections.Add(section);
-          else _sections[_sections.IndexOf(s)] = section;
+          if (s==null)
+            _sections.Add(section);
+          else
+            _sections[_sections.IndexOf(s)]=section;
 
           return true;
       }
@@ -53,7 +66,8 @@ namespace CodeDek.Ini
 
     public static Ini Parse(string text)
     {
-      if (string.IsNullOrEmpty(text)) return default;
+      if (string.IsNullOrEmpty(text))
+        return default;
 
       var ini = new Ini();
       foreach (Match m in Regex.Matches(text.Trim(), _sectionPattern))
@@ -99,7 +113,8 @@ namespace CodeDek.Ini
 
     public IEnumerable<Section> Sections(string regxPattern)
     {
-      if (string.IsNullOrWhiteSpace(regxPattern)) yield return default;
+      if (string.IsNullOrWhiteSpace(regxPattern))
+        yield return default;
 
       foreach (var section in _sections)
       {
@@ -111,5 +126,7 @@ namespace CodeDek.Ini
 
     public override string ToString() =>
       $"{string.Join($"{Environment.NewLine}{Environment.NewLine}", _sections.Select(s => s))}".Trim();
+
+    public static bool IsNullOrEmpty(Ini ini) => ini?.Sections().Any()==false;
   }
 }
