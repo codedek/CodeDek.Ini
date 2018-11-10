@@ -1,6 +1,6 @@
 [![GitHub license](https://img.shields.io/github/license/codedek/CodeDek.Ini.svg)]()<!--(https://github.com/codedek/CodeDek.Ini/blob/master/LICENSE)-->
 [![GitHub release](https://img.shields.io/github/release/codedek/CodeDek.Ini.svg)]()<!--(https://github.com/codedek/CodeDek.Ini/releases/latest)-->
-<!--[![Github All Releases](https://img.shields.io/github/downloads/codedek/CodeDek.Ini/total.svg)]()-->
+[![Github All Releases](https://img.shields.io/github/downloads/codedek/CodeDek.Ini/total.svg)]()<!---->
 <!--[![Github downloads](https://img.shields.io/github/downloads/codedek/CodeDek.Ini/v.0.1/total.svg)]()-->
 <!---![Github Releases](https://img.shields.io/github/downloads/codedek/CodeDek.Ini/latest/total.svg)-->
 
